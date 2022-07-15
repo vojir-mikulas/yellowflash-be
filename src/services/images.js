@@ -1,34 +1,34 @@
-const { PrismaClient } = require('@prisma/client');
+const {PrismaClient} = require('@prisma/client');
 const prisma = new PrismaClient();
 
 //TODO try catch
-async function createImage(itemId,pathString) {
+async function createImage(itemId, pathString) {
     return await prisma.image.upsert({
         where: {
             url: pathString,
         },
-        create:{
+        create: {
             itemId: itemId,
             url: pathString,
         },
-        update:{
-
-        }
+        update: {}
     });
 }
 
-async function getAllImages(){
+async function getAllImages() {
     return await prisma.image.findMany();
 }
 
-async function deleteImageById(id){
+async function deleteImageById(id) {
     return await prisma.image.delete({
         where: {
             id: id,
-        },})
+        },
+    })
 }
+
 module.exports = {
-    createImage:createImage,
-    deleteImageById:deleteImageById,
-    getAllImages:getAllImages,
+    createImage: createImage,
+    deleteImageById: deleteImageById,
+    getAllImages: getAllImages,
 }

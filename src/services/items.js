@@ -1,31 +1,17 @@
 const {PrismaClient} = require('@prisma/client');
 const prisma = new PrismaClient();
 
-//TODO try catch
-async function getAllItems(lowestPrice,highestPrice,categories,colors,sizes) {
-    console.log({
-        ...(categories.length !== 0 ? {
-           AND: categories.map((category) => ({
-               categories:{
-                 some:{
-                     categoryId: category
-                 }
-               }
-           }))
-        } : undefined)
-    })
-
-
+async function getAllItems(lowestPrice, highestPrice, categories, colors, sizes) {
     return await prisma.item.findMany({
         where: {
-            price:{
-                lte:highestPrice,
+            price: {
+                lte: highestPrice,
                 gte: lowestPrice
             },
             ...(categories.length !== 0 ? {
                 AND: categories.map((category) => ({
-                    categories:{
-                        some:{
+                    categories: {
+                        some: {
                             categoryId: parseInt(category)
                         }
                     }
@@ -47,24 +33,24 @@ async function getAllItems(lowestPrice,highestPrice,categories,colors,sizes) {
             } : undefined)
         },
         select: {
-            id:true,
-            name:true,
-            details:true,
-            price:true,
-            categories:{
-                select:{
-                    category:true
+            id: true,
+            name: true,
+            details: true,
+            price: true,
+            categories: {
+                select: {
+                    category: true
                 }
             },
-            sizes:{
-                select:{
-                    id:true,
-                    size:true
+            sizes: {
+                select: {
+                    id: true,
+                    size: true
                 }
             },
-            colors:{
-                select:{
-                    color:true
+            colors: {
+                select: {
+                    color: true
                 }
             },
             images: {
@@ -97,23 +83,30 @@ async function getItemById(id) {
         select: {
             id: true,
             name: true,
-            description: true,
             details: true,
             price: true,
+            categories: {
+                select: {
+                    category: true
+                }
+            },
+            sizes: {
+                select: {
+                    id: true,
+                    size: true
+                }
+            },
+            colors: {
+                select: {
+                    color: true
+                }
+            },
             images: {
                 select: {
                     id: true,
                     url: true
                 }
             },
-            sizes: {
-                select: {
-                    id: true,
-                    size: true,
-                    count: true
-                }
-            }
-
         }
     })
 }
