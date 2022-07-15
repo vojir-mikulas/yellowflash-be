@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model category {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  title             String
+  items             categoriesonitems[]
+}
+
+model categoriesonitems {
+  itemId     String
+  categoryId Int
+  category   category @relation(fields: [categoryId], references: [id],onDelete:Cascade, onUpdate: Cascade)
+  item       item     @relation(fields: [itemId], references: [id],onDelete:Cascade, onUpdate: Cascade)
+
+  @@id([itemId, categoryId])
+}
+
+model coloronitems{
+  itemId     String
+  colorId    Int
+  color      color @relation(fields: [colorId], references: [id])
+  item       item     @relation(fields: [itemId], references: [id])
+
+  @@id([itemId, colorId])
+}
+
+model item {
+  id                String                 @id
+  name              String
+  details           String                 @db.Text
+  price             Int
+  colors            coloronitems[]
+  sizes             size[]
+  categories        categoriesonitems[]
+  images            image[]
+}
+model image {
+  id     Int    @id @default(autoincrement())
+  url    String @unique
+  itemId String?
+  item   item?  @relation(fields: [itemId], references: [id])
+}
+model color{
+  id                Int                 @id @default(autoincrement())
+  name              String
+  items             coloronitems[]
+}
+model size{
+  id                Int                 @id @default(autoincrement())
+  size              String
+  itemId            String?
+  item              item?               @relation(fields: [itemId], references: [id])
+}
