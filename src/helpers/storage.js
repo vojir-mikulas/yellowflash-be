@@ -10,19 +10,16 @@ const {createImage} = require("../services/images")
 //HELPERS
 const storage = multer.diskStorage(({
     destination: async (req, file, cb) => {
-        try {
+
             const item = await getItemNameById(req.body.itemId);
+            console.log(item)
             ensureExists(`public/img/${item.id}`, 0o744, (err) => {
-                if (err) console.error(`Složka v public/img/${itemId} již existuje`);
+                if (err) console.error(`Složka v public/img/${item.id} již existuje`);
             })
 
             await createImage(item.id, `public/${item.id}/${req.body.imgName}${path.extname(file.originalname)}`);
 
             cb(null, `public/img/${item.id}`)
-        } catch {
-            return false;
-        }
-
 
     },
     filename: (req, file, cb) => {

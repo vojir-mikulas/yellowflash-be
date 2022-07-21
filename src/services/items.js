@@ -12,7 +12,7 @@ async function getAllItems(lowestPrice, highestPrice, categories, colors, sizes)
                 AND: categories.map((category) => ({
                     categories: {
                         some: {
-                            categoryId: parseInt(category)
+                            categoryId: category
                         }
                     }
                 }))
@@ -20,7 +20,7 @@ async function getAllItems(lowestPrice, highestPrice, categories, colors, sizes)
             ...(colors.length !== 0 ? {
                 colors: {
                     some: {
-                        OR: colors.map((color) => ({id: color}))
+                        OR: colors.map((color) => ({colorId: parseInt(color)}))
                     }
                 }
             } : undefined),
@@ -116,9 +116,7 @@ async function getItemNameById(id) {
         where: {
             id: id,
         },
-        select: {
-            name: true,
-        }
+
     })
 }
 
