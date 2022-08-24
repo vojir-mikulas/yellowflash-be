@@ -76,8 +76,8 @@ const mailer = async (paymentIntent) => {
             host: "smtp.gmail.com",
             port: 465,
             auth: {
-                user: "noreply.yellowflash@gmail.com ", // generated ethereal user
-                pass: "texkwradzdyealuk", // generated ethereal password
+                user: process.env.MAIL_LOGIN , // generated ethereal user
+                pass: process.env.MAIL_PASSWORD, // generated ethereal password
             },
             tls: {
                 rejectUnauthorized: false
